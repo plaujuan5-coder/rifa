@@ -1,123 +1,44 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Rifa Online IPHONE 17 PRO </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-    .container {
-      max-width: 600px;
-      width: 100%;
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    p {
-      text-align: center;
-      opacity: 0.9;
-    }
-    .numbers {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      margin: 20px 0;
-      max-height: 400px;
-      overflow-y: auto;
-    }
-    .number {
-      padding: 12px 0;
-      background: #2a2a2a;
-      border-radius: 8px;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-    }
-    .number.selected {
-      background: #8e2de2;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #00c853;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #00b44a;
-    }
-    .footer {
-      margin-top: 15px;
-      font-size: 13px;
-      text-align: center;
-      opacity: 0.7;
-    }
-  </style>
-</head>
-<body>
+<script>
+const totalNumeros = 500;
 
-  <div class="container">
-    <h1>🎟️ Rifa Online</h1>
-    <p>Elegí tu número — Valor: <b>R$10</b></p>
+// 👇 ACA BLOQUEAS LOS PAGADOS
+const vendidos = [37, 102, 219];
 
-    <div class="numbers" id="numbers"></div>
+const contenedor = document.getElementById("numbers");
 
-    <button onclick="comprar()">Comprar número</button>
+for (let i = 1; i <= totalNumeros; i++) {
+  const div = document.createElement("div");
+  div.className = "number";
+  div.textContent = i;
 
-    <div class="footer">
-      Premio: ___________<br>
-      Sorteo: __ / __ / ____<br>
-      Pago por Mercado Pago
-    </div>
-  </div>
+  if (vendidos.includes(i)) {
+    div.style.background = "#444";
+    div.style.cursor = "not-allowed";
+  } else {
+    div.onclick = () => selectNumber(div, i);
+  }
 
-  <script>
-    const numbersContainer = document.getElementById("numbers");
-    let selectedNumber = null;
+  contenedor.appendChild(div);
+}
 
-    // Crear números del 1 al 500
-    for (let i = 1; i <= 500; i++) {
-      const div = document.createElement("div");
-      div.className = "number";
-      div.textContent = i;
-      div.onclick = () => selectNumber(div, i);
-      numbersContainer.appendChild(div);
-    }
+let selectedNumber = null;
 
-    function selectNumber(div, number) {
-      document.querySelectorAll(".number").forEach(n => n.classList.remove("selected"));
-      div.classList.add("selected");
-      selectedNumber = number;
-    }
+function selectNumber(div, number) {
+  document.querySelectorAll(".number").forEach(n => n.classList.remove("selected"));
+  div.classList.add("selected");
+  selectedNumber = number;
+}
 
-    function comprar() {
-      if (!selectedNumber) {
-        alert("Seleccioná un número primero");
-        return;
-      }
+function comprar() {
+  if (!selectedNumber) {
+    alert("Elegí un número disponible primero");
+    return;
+  }
 
-      const telefono = "5522999339777"; 
-      const mensaje = `Hola! Quiero comprar el número ${selectedNumber} de la rifa. Valor R$10. ¿Me pasás el link de Mercado Pago?`;
-      const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+  const telefono = "5522999339777";
+  const mensaje = `Hola! Quiero comprar el número ${selectedNumber} de la rifa. Ya voy a pagar R$10.`;
+  const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
 
-      window.open(url, "_blank");
-    }
-  </script>
-
-</body>
-</html>
-
+  window.open(url, "_blank");
+}
+</script>
